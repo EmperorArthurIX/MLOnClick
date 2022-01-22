@@ -1,4 +1,7 @@
 # ML On Click
+
+[![ML On Click](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/emperorarthurix/mlonclick/main)
+
 > Made with blood, sweat and tears. Emphasis on blood.
 > 
 > If you try to steal it, we will find you and stop you :) So please don't. Let's be friends instead.
