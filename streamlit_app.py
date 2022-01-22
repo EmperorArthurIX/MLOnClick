@@ -85,7 +85,7 @@ if page == pages[1]:
     )
     proceed_column_choice = False
     algos = ["Simple Linear Regression", "Logistic Regression", "Polynomial Regression"]
-    ds_list = {"Titanic Survival":"submission.csv"}
+    ds_list = {"Heart Diseases":"Heart Predictions 2.csv", "Titanic Survival":"submission.csv"}
     ds = st.selectbox("From our datasets:",ds_list)
 
     upload = st.sidebar.file_uploader("Upload Here:", type=['csv', 'txt'], help="You may upload a 'Comma Separated Values' file(.csv) containing your data, or a 'Text' file(.txt) in which the data is Comma-Delimited")
@@ -151,7 +151,7 @@ if page == pages[1]:
         from sklearn.model_selection import train_test_split
         import matplotlib.pyplot as plt
         import seaborn as sns
-
+        import pickle
         
         # Cleaning Data, if possible automatically
         # Obtaining null values
@@ -240,6 +240,13 @@ if page == pages[1]:
         # ### test_target = test_data[chosen_target]  ## PROBABLY WONT EXIST IN DATASET
 
         # test_preds = logreg.predict(test_features)
+        try:
+            if st.checkbox("Make file for download"):
+                pickle.dump(logreg, open('model.pkl', 'wb'))
+                st.download_button("Download LogReg Model", 'model.pkl', file_name="LogReg.pkl")
+        except:
+            st.write("Could not store the model in file. ;(")
+
     elif ml_type == algos[2]:
         st.write(algos[2])
         import pandas as pd
@@ -270,7 +277,7 @@ if page == pages[1]:
                 df.dropna(axis=0, inplace=True)
             else:
                 st.write("\nThe null values constitute a major portion of the data, consider choosing a different set of columns, or try cleaning the data locally\n")
-
+        # st.download_button("Download PolyReg Model", dat)
 
 
     # END OF DATA SELECTION
