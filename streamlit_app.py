@@ -243,9 +243,10 @@ if page == pages[1]:
         try:
             if st.checkbox("Make file for download"):
                 pickle.dump(logreg, open('model.pkl', 'wb'))
-                st.download_button("Download LogReg Model", 'model.pkl', file_name="LogReg.pkl")
+                with open('model.pkl', 'rb') as f:
+                    st.download_button("Download LogReg Model", f, file_name="LogReg.pkl")
         except:
-            st.write("Could not store the model in file. ;(")
+            st.write("\nCould not store the model in file. ;(\n")
 
     elif ml_type == algos[2]:
         st.write(algos[2])
