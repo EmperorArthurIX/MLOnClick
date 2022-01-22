@@ -85,7 +85,7 @@ if page == pages[1]:
     )
     proceed_column_choice = False
     algos = ["Simple Linear Regression", "Logistic Regression", "Polynomial Regression"]
-    ds_list = {"Daily Temperature":"WW2 Summary of Weather.csv", "Titanic Survival":"Test Population Data.csv"}
+    ds_list = {"Titanic Survival":"submission.csv"}
     ds = st.selectbox("From our datasets:",ds_list)
 
     upload = st.sidebar.file_uploader("Upload Here:", type=['csv', 'txt'], help="You may upload a 'Comma Separated Values' file(.csv) containing your data, or a 'Text' file(.txt) in which the data is Comma-Delimited")
