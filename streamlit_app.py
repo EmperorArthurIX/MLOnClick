@@ -299,9 +299,9 @@ if page == pages[-1]:
         """
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" height="12.5%" width = "12.5%">
         
-        <img src = "https://upload.wikimedia.org/wikipedia/commons/4/48/Markdown-mark.svg" height="12.5%" width="20%" style="margin: 0 10%;">
+        <img src = "https://upload.wikimedia.org/wikipedia/commons/4/48/Markdown-mark.svg" height="12.5%" width="20%" style="margin: 0 5%;">
 
-        <img src="https://www.docker.com/sites/default/files/d8/styles/role_icon/public/2019-07/vertical-logo-monochromatic.png?itok=erja9lKc" height="12.5%" width="15%">
+        <img src="https://streamlit.io/images/brand/streamlit-logo-secondary-colormark-darktext.svg" height="15%" width="50%">
         <br><br>
         """,
         unsafe_allow_html=True
