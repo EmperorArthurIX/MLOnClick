@@ -10,14 +10,13 @@
 
 ---
 ## Inspiration
-(PS: I == Ishaan is speaking)
 
-I have always found *Machine Learning* very tedious to learn. I love it, but it does not change the fact that it **is** difficult. I looked up solutions online for *low-code* or *no-code* machine learning, but all I could find were these technology giants like **Google**, **Amazon** and **Microsoft** providing it on the *cloud* for a price per use basis
+We have always found *Machine Learning* very tedious to learn. We love it, but it does not change the fact that it **is** difficult. We looked up solutions online for *low-code* or *no-code* machine learning, but all we could find were these technology giants like **Google**, **Amazon** and **Microsoft** providing it on the *cloud* for a price per use basis
 
 ***OR***
 
 Services like **SashiDo** which, very justifiably, charge us for their hard work.
-**BUT**, what about a guy like me? Someone who just wants to get away with stuff like
+**BUT**, what about guys like us? Someone who just wants to get away with stuff like
 - Linear Regression
 - Logistic Regression
 - K Nearest Neighbours
@@ -25,9 +24,9 @@ Services like **SashiDo** which, very justifiably, charge us for their hard work
 
 and other simple algorithms, **without** having to write a hundred lines of code every single time?
 
-I want to create something like [ILovePDF](https://www.ilovepdf.com/)!
+We want to create something like [ILovePDF](https://www.ilovepdf.com/)!
 
-##### I could find no solution out there, so I thought I'll just go ahead and build it myself and save everyone around me a tonne of time, for free, unless any of you choose to pay me as an intern ;)
+##### We could find no solution out there, so we thought we'll just go ahead and build it ourself and save everyone around us a tonne of time, for free, unless any of you choose to pay us as an intern ;)
 
 ---
 ## What it does
@@ -76,7 +75,7 @@ Some of the challenges we faced before and/or are facing right now are:
 - **Turning the Idea into a Plan**. We had an dream, but we had to lay down a series of steps to reach there as well. Brainstorming helped us come up with a few major steps to begin with
 - **Unclean data**. Not every dataset that gets uploaded on the app will be ML suitable. We need to have some sort of mechanism to detect noise in the data, and if possible remove it, or at least let the user know about it. So, we are working on implementing a null-value system which checks how much useful data is actually present in the dataset
 - **Categorical and Numerical Data**. Machine Learning models usually require Categorical data to be converted to features by one hot encoding, dummy variables, binary encoding and other such techniques; however, doing so **automatically** is easier said than done. We are still trying to figure out what to do with this issue.
-- **Bugs**. Sometimes, while testing the app, it runs just fine, but when I come back the other day, it breaks. It's the second nature of programming, and we are tackling all this with `try` and `except` blocks.
+- **Bugs**. Sometimes, while testing the app, it runs just fine, but when we come back the other day, it breaks. It's the second nature of programming, and we are tackling all this with `try` and `except` blocks.
 - **Data Type Incompatibilities**. Of course, when we perform Machine Learning by hand, we are able to go through data extensively and check for incosistencies in data types like the `Exam_Marks` column being labelled as `str` instead of `float32`, or `pandas.Series` being replaced by a `numpy.ndarray` and such stuff; however, we are still trying to find a way to do this without having to manually check everything.
 
 ---
