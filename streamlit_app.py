@@ -142,8 +142,11 @@ if page == pages[1]:
     ml_type = st.selectbox("Machine Learning Algorithm", algos, help="What kind of algorithm do you feel would be best fit for your analysis?")
     bf_elim = st.sidebar.checkbox("No Backward Feature Elimination")
     
+    # END OF DATA SELECTION
+
     if ml_type == algos[0]:
         st.write(algos[0])
+    
     elif ml_type == algos[1]:
         import pandas as pd
         import numpy as np
@@ -254,7 +257,7 @@ if page == pages[1]:
         import numpy as np
         import matplotlib.pyplot as plt
         import seaborn as sns
-        from sklearn.linear_model import LinearRegression
+        from sklearn.linear_model import LinearRegression, Ridge, ElasticNet
         from sklearn.model_selection import train_test_split, GridSearchCV
         from sklearn.preprocessing import PolynomialFeatures
         from sklearn.metrics import r2_score, mean_squared_error
@@ -278,16 +281,88 @@ if page == pages[1]:
                 df.dropna(axis=0, inplace=True)
             else:
                 st.write("\nThe null values constitute a major portion of the data, consider choosing a different set of columns, or try cleaning the data locally\n")
-        # st.download_button("Download PolyReg Model", dat)
+        
+        if len(og_chosen_cols) > 1:
+            st.write("\nWe select the first column from this list as the independent variable. If you feel that `{}` is not the column you wish to be used as the `Independent variable`, please choose the column you want to use from the dropdown in the sidebar.\n".format(og_chosen_cols[0]))
+        chosen_cols = og_chosen_cols[0]
+        chosen_target = og_chosen_target
 
+        X_data = df[chosen_cols].values.reshape(-1,1)
+        Y_data = df[chosen_target].values.reshape(-1,1)
 
-    # END OF DATA SELECTION
+        fig = sns.displot(Y_data,kind='kde')
+        plt.xlabel(chosen_target)
+        plt.title('Original Distribution')
+        st.pyplot(fig)
+
+        x_train, x_test, y_train, y_test = train_test_split(X_data, Y_data, test_size=0.3, random_state=42)
+        linreg = LinearRegression()
+
+        linreg.fit(x_train, y_train)
+
+        st.write(
+            "\nFrom Linear Regression:\n",
+            "\n- Coefficient: {}".format(round(linreg.coef_[0][0], 3)),
+            "\n- Intercept: {}".format(round(linreg.intercept_[0],3))
+            )
+        fig2,ax1 = plt.subplots()
+        ax1 = sns.regplot(X_data, Y_data)
+        st.write(fig2)
+        y_hat = linreg.predict(x_test)
+        st.write(
+            "\nAccuracy of Linear Model: {}%\n".format(round(linreg.score(x_test, y_test)*100, 3)),
+            "\nMean Square Error: {}\n".format(round(mean_squared_error(y_test, y_hat),2))
+            )
+        
+        cv_params = [{'alpha': [0.1, 0.2, 0.4, 0.8, 1.6, 3.2, 6.4] }]
+        cv_best_est, cv_best_r2, cv_best_mse, cv_best_param = [],[],[],[]
+        degrees = st.sidebar.slider("Max Polynomial Degree", 2, 10)
+        for d in range(degrees):
+            pf = PolynomialFeatures(degree=d+1)
+            Xd = pf.fit_transform(x_train)
+            Grid=GridSearchCV(estimator=Ridge(random_state=42), param_grid=cv_params, scoring=['r2','neg_mean_squared_error'], refit='r2')
+            Grid.fit(Xd, y_train)
+            cv_best_est.append(Grid.best_estimator_)
+            cv_best_r2.append(Grid.best_score_)
+            cv_best_param.append(Grid.best_params_)
+            cv_best_mse.append((-1)*Grid.cv_results_['mean_test_neg_mean_squared_error'][Grid.best_index_])
+
+            best_d_r2 = cv_best_r2.index(max(cv_best_r2))+1
+            best_d_mse = cv_best_mse.index(max(cv_best_mse))+1
+
+        st.subheader("Polynomial Regression Results")
+        st.write(
+            "\nDegree with best R2: {}\n".format(round(best_d_r2, 3)),
+            "\nDegree with best MSE: {}\n".format(round(best_d_mse), 3)
+            )
+        if best_d_mse != best_d_r2:
+            st.write("\nIt appears this set of columns are not suitable for prediction by Polynomial Regression\n")
+        else:
+            st.write(
+                "\nBest hyperparameters:\n- Degree: {}\n- Alpha: {}\n".format(best_d_r2, round(cv_best_param[best_d_r2-1]['alpha'],3))
+            )
+            BestModel = cv_best_est[best_d_r2-1]
+            pf = PolynomialFeatures(degree= best_d_r2)
+            X_dtest = pf.fit_transform(x_test)
+            y_dhat = BestModel.predict(X_dtest)
+
+            st.write(
+                "\nAccuracy: {}%\n".format(round(BestModel.score(X_dtest, y_test)*100,3)),
+                "\nMean Squared Error: {}\n".format(round(mean_squared_error(y_test, y_dhat),3))
+            )
+            try:
+                import pickle
+                if st.checkbox("Make file for download"):
+                    pickle.dump(BestModel, open('model.pkl', 'wb'))
+                    with open('model.pkl', 'rb') as f:
+                        st.download_button("Download PolyReg Model", f, file_name="PolyReg.pkl")
+            except:
+                st.write("\nCould not store the model in file. ;(\n")
 
 # END OF MACHINE LEARNING
 
 # ABOUT US
 if page == pages[-1]:
-
     st.title("ML On Click - About Us", anchor="#AboutUs")
     st.write("\n\n#### Meet the App-Makers!\n")
     st.markdown("\n|Name|GitHub Profile|LinkedIn|\n|----|----|\n|Aishwarya Funaguskar|[Aish1214](https://github.com/Aish1214)|[Aishwarya Funaguskar](https://www.linkedin.com/in/aishwarya-funaguskar-b05812213/)|\n|Ishaan Sunita Pandita|[EmperorArthurIX](https://github.com/EmperorArthurIX)|[Ishaan Sunita Pandita](https://linkedin.com/in/ishaan-sunita-pandita)|\n|Rahul Pathak|[2911rahulpathak](https://github.com/2911rahulpathak)|[Rahul Pathak](https://www.linkedin.com/in/rahulgovindpathak/)|\n|Yash Shinde|[yashshinde03](https://github.com/yashshinde03)|[Yash Shinde](https://www.linkedin.com/in/yash-shinde-134560202/)|\n")
